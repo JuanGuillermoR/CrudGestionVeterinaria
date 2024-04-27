@@ -120,6 +120,11 @@ let informacionMascotas = [
 		correoPropietario: "sara@example.com"
 	}
 ];
+/*
+Esta funcion me permite pedir la informacion de una mascota, teniendo la informacion de cada propiedad creo una variable tipo Object "{}" en la cual le asigno el valor a la llave correspondiente
+
+y solo para agregarlo al array utilizo el metodo push 
+*/
 function addNewPet() {
     nombre = prompt("Ingresa el nombre de la mascota")
     especie =  prompt("Ingresa la especie"),
@@ -146,18 +151,27 @@ function addNewPet() {
     informacionMascotas.push(newPet)
 }
 
+/*
+Esta funcion me permite recorrer con el forEach ya que es especialmente para los array y me imprime cada objeto que se encuentre en la lista
+*/
 function MostrarTodaslasMascotas(informacionMascotas) {
     informacionMascotas.forEach(element => {
         console.log(element);
     });
 }
 
+/*
+Esta funcion me permite recorrer con el forEach ya que es especialmente para los array y me imprime cada objeto que se encuentre en la lista especificandole que solo me traiga el nombre de cada propietario
+*/
 function todosLosDueños(informacionMascotas) {     
     informacionMascotas.forEach(element => {
         console.log(element.nombrePropietario);
     });
 }
 
+/*
+Esta funcion con el metodo find me recorre la lista con la condicion de que nombre de la mascota a buscar sea igual al nombre que ya existe en la lista, adicional se le pone tolowercase para evitar de que el nombre tenga que ser exactamente igual
+*/
 function buscarMascota(informacionMascotas) {
     let nombreMascota = prompt("Ingrese el nombre de la mascota que desea buscar:");
         let mascotaTrue = informacionMascotas.find(mascota => mascota.nombre.toLowerCase() === nombreMascota.toLowerCase());
@@ -169,7 +183,9 @@ function buscarMascota(informacionMascotas) {
         }
 }
 
-
+/*
+Esta funcion con el metodo filter me recorre la lista con la condicion de que nombre del dueño a buscar sea igual al nombre que ya existe en la lista, sin embargo, este metodo me trae el nombre del propietario todo el objeto donde se encuentre el mismo nombre, adicional se le pone tolowercase para evitar de que el nombre tenga que ser exactamente igual
+*/
 function filtroMascotasConelMismoDueño(informacionMascotas) {
     let nombreDueño = prompt("Ingrese el nombre del dueño que desea Filtrar:");
     let dueño = informacionMascotas.filter(dueño => dueño.nombrePropietario.toLowerCase() === nombreDueño.toLowerCase());
@@ -181,13 +197,64 @@ function filtroMascotasConelMismoDueño(informacionMascotas) {
     } 
 }
 
+/*
+Esta funcion con el metodo find me recorre la lista con la condicion de que nombre de la mascota a buscar sea igual al nombre que ya existe en la lista, adicional se le pone tolowercase para evitar de que el nombre tenga que ser exactamente igual
+
+teniendo el objeto simplemete vuelvo a nombrar variables con los valores que quiero que se vayan a actualizar y solo accedo a cada valor y se le asigna un nuevo valor que previamente ya habiamos pedido
+*/
 function actualizarMascota(informacionMascotas) {
     let nombre = prompt("Ingrese el nombre de la mascota a actualizar:");
+	// Buscar la mascota en la lista
+    let mascotaEncontrada = informacionMascotas.find(mascota => mascota.nombre === nombre);
     
+	if (mascotaEncontrada) {
+    // Solicitar al usuario las nuevas propiedades de la mascota
+    let nuevoNombre = prompt("Ingresa el nombre de la mascota")
+    let nuevoEspecie =  prompt("Ingresa la especie")
+    let nuevoRaza = prompt("Ingresa la raza")
+    let nuevoFechaNacimiento = new Date ( prompt("ingresa la fecha de nacimiento YYYY/MM/DD"))
+    let nuevoPeso = parseFloat(prompt("ingresa el peso de la mascota"))
+    let nuevoEstado = prompt("ingresa el estado de la mascota estable,critico")
+    let nuevoNombrePropietario = prompt("ingresa el nombre del dueño")
+    let nuevodocumentoPropietario = prompt("ingresa el documento del dueño")
+    let nuevotelefonoContacto =  prompt("ingresa el numero de contacto del dueño")
+    let nuevocorreoPropietario =  prompt("ingresa el correo del dueño")
+
+    // Actualizar las propiedades de la mascota encontrada
+    mascotaEncontrada.nombre = nuevoNombre;
+    mascotaEncontrada.especie = nuevoEspecie;
+	mascotaEncontrada.raza = nuevoRaza;
+	mascotaEncontrada.fechaNacimiento = nuevoFechaNacimiento;
+	mascotaEncontrada.peso = nuevoPeso;
+	mascotaEncontrada.estado = nuevoEstado;
+	mascotaEncontrada.nombrePropietario = nuevoNombrePropietario;
+	mascotaEncontrada.documentoPropietario = nuevodocumentoPropietario;
+	mascotaEncontrada.telefonoContacto = nuevotelefonoContacto;
+	mascotaEncontrada.correoPropietario = nuevocorreoPropietario;
+
+    console.log("Mascota actualizada con éxito:", mascotaEncontrada);
+} else {
+    console.log("No se encontró ninguna mascota con ese nombre.");
+}
 }
 
+/*
+Esta funcion con el metodo findIndex me trae el indice donde el nombre de la mascota haya coincidido, para luego con el metodo splice eliminar su posicion 
+*/
+function eliminarMascota(informacionMascotas) {
+    let nombreMascota = prompt("Ingrese el nombre de la mascota que desea Eliminar:");
+    let eliminarMascota = informacionMascotas.findIndex(mascota => mascota.nombre === nombreMascota);
+	
 
-// 5. Filtrar y luego mostrar a todas las mascotas pertenecientes a un mismo dueño
+    if (eliminarMascota) {
+		informacionMascotas.splice(eliminarMascota, 1);
+        console.log("la mascota con el nombre",nombreMascota,"se ha eliminado");
+    } else {
+        console.log(`El ${nombreDueño} no un dueño`);
+    } 
+}
+
+//se crea una funcion que se imprima el menu donde lo requiera adicional se pone el return para que la opcion que se eliga la pueda extrear por fuera de su scope
 let opcion
 function menu() {
     opcion = prompt(`---------Bienvenidos a la veterinaria---------
@@ -204,11 +271,11 @@ function menu() {
 }
 menu()
 
-
+//Utilizamos el la estructura de control while que me muestre el menu hasta no ingresar la opcion "8"
 while (opcion != 8) {
     if (opcion == "1") {
+		//Sin argumentos porque no necesitamos nada de la informacion del array
         addNewPet()
-        console.log(informacionMascotas.length);
         menu()
     } else if (opcion == "2") {
         MostrarTodaslasMascotas(informacionMascotas)
@@ -223,7 +290,13 @@ while (opcion != 8) {
         filtroMascotasConelMismoDueño(informacionMascotas)
         menu()
     }else if (opcion == "6") {
-        
+        actualizarMascota(informacionMascotas)
         menu()
-    }
+    }else if (opcion == "7") {
+		eliminarMascota(informacionMascotas)
+		menu()
+	}else{
+		console.log("opcion no valida")
+        menu()
+	}
 }
